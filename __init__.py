@@ -5,9 +5,14 @@ from aqt import mw, gui_hooks
 from aqt.qt import QKeySequence, QAction, QPushButton, QHBoxLayout
 from aqt.editor import Editor
 
+sentence_audio_field = "SentenceAudio"
+external_tool = os.path.expanduser(r"~\AppData\Roaming\GameSentenceMiner\ocenaudio\ocenaudio\ocenaudio.exe")
+open_audio_in_external_hotkey = 'F14'
+open_audio_in_directory_hotkey = 'F15'
+
 def get_audio_filename_from_field(note):
-    if 'SentenceAudio' in note:
-        match = re.search(r'\[sound:(.*?)\]', note['SentenceAudio'])
+    if sentence_audio_field in note:
+        match = re.search(r'\[sound:(.*?)\]', note[sentence_audio_field])
         if match:
             return match.group(1)
     return None
@@ -48,7 +53,6 @@ def open_audio_in_external(editor = None):
         mw.statusBar().showMessage("Audio file not found in media folder.", 3000)
         return
     
-    external_tool = os.path.expanduser(r"~\AppData\Roaming\GameSentenceMiner\ocenaudio\ocenaudio\ocenaudio.exe")  # Change this to your preferred program
     subprocess.Popen([external_tool, file_path], shell=True)
     
 def show_in_filemanager(editor = None):
@@ -76,7 +80,7 @@ def add_toolbar_buttons(html_buttons: list[str], editor: Editor) -> None:
             func=open_audio_in_external,
             cmd="open_audio_in_external",
             tip="Open Audio in External Tool",
-            keys="F14",
+            keys=open_audio_in_external_hotkey,
         )
     ),
         editor.addButton(
@@ -84,19 +88,19 @@ def add_toolbar_buttons(html_buttons: list[str], editor: Editor) -> None:
             func=show_in_filemanager,
             cmd="show_in_filemanager",
             tip="Open Audio in Folder",
-            keys="F15",
+            keys=open_audio_in_directory_hotkey,
         )
     ])
 
 
 def setup_hotkey():
     action = QAction("Open Audio Externally", mw)
-    action.setShortcut(QKeySequence("F14"))
+    action.setShortcut(QKeySequence(open_audio_in_external_hotkey))
     action.triggered.connect(open_audio_in_external)
     mw.form.menuTools.addAction(action)
     
     action_copy = QAction("Open Audio in Folder", mw)
-    action_copy.setShortcut(QKeySequence("F15"))
+    action_copy.setShortcut(QKeySequence(open_audio_in_directory_hotkey))
     action_copy.triggered.connect(show_in_filemanager)
     mw.form.menuTools.addAction(action_copy)
 
