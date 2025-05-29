@@ -6,7 +6,7 @@ from aqt.qt import QKeySequence, QAction, QPushButton, QHBoxLayout
 from aqt.editor import Editor
 
 sentence_audio_field = "SentenceAudio"
-external_tool = os.path.expanduser(r"~\AppData\Roaming\GameSentenceMiner\ocenaudio\ocenaudio\ocenaudio.exe")
+external_tool = os.path.expanduser(r"~\AppData\Roaming\GameSentenceMiner\ocenaudio\ocenaudio.exe")
 open_audio_in_external_hotkey = 'F14'
 open_audio_in_directory_hotkey = 'F15'
 
